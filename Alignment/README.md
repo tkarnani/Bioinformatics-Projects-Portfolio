@@ -1,9 +1,9 @@
 Tusha Karnani
 April 2025
 
-locAL.py
-Usage: python locAL.py -q [query file] -d [database file] -m [match score] -s [mismatch score] -i [indel score] -a 
-Output: for the best local alignment, prints the beginning index of the query sequence, end index of the query sequence, beginning index of the database sequence, end index of the database sequence, score of the best local alignment, and the length of the locally aligned sequence
+locAL.py   
+Usage: python locAL.py -q [query file] -d [database file] -m [match score] -s [mismatch score] -i [indel score] -a    
+Output: for the best local alignment, prints the beginning index of the query sequence, end index of the query sequence, beginning index of the database sequence, end index of the database sequence, score of the best local alignment, and the length of the locally aligned sequence    
 Notes: the optional -a provides the alignment in a BLAST-like format
 
 
