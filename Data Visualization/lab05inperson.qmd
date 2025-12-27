@@ -1,0 +1,130 @@
+---
+title: "Data Visualization Project"
+author: "Tusha Karnani"
+format: pdf
+---
+
+### Dataset 1
+
+For this data visualization project, I imported a data set containing up/downregulation data on 5000+ genes.
+
+```{r}
+url <- "https://bioboot.github.io/bimm143_S20/class-material/up_down_expression.txt"
+genes <- read.delim(url)
+head(genes)
+library(ggplot2)
+```
+> How many genes are in this dataset?
+
+5196
+
+> How many upregulated genes are there?
+
+127
+
+```{r}
+nrow(genes)
+
+sum(genes$State=="up")
+table(genes$State)
+```
+
+```{r}
+ggplot(data=genes) +
+  aes(x=Condition1, y=Condition2, col=State) +
+  geom_point() +
+  scale_colour_manual( values=c("blue","gray","red") ) +
+  labs(title="Gene Expression Changing upon Drug Treatment", x="Control (no drug)", y="Treatment (with drug") +
+  theme_linedraw()
+```
+
+### Dataset 2 
+
+I then imported a data set containing data on the life expectancy, population, and GDP per capita of 142 countries across 12 years.
+
+```{r}
+url <- "https://raw.githubusercontent.com/jennybc/gapminder/master/inst/extdata/gapminder.tsv"
+gapminder <- read.delim(url)
+```
+
+Data on all 142 countries from 2007
+
+```{r}
+library(dplyr)
+gapminder_2007 <- gapminder %>% filter(year==2007)
+head(gapminder_2007)
+```
+
+Initialization exploratory visualization
+
+```{r}
+ggplot(gapminder_2007) +
+  aes(x=gdpPercap, y=lifeExp) +
+  geom_point(alpha=0.5)
+
+# alpha makes the dots more transparent
+```
+
+> How many countries are in this dataset?
+
+142
+
+> How many continents are in this dataset?
+
+5
+
+```{r}
+length(table(gapminder$country))
+length(table(gapminder$continent))
+```
+
+```{r}
+ggplot(gapminder_2007) +
+  aes(x=gdpPercap, y=lifeExp, color=continent, size=pop) +
+  geom_point(alpha=0.5)
+```
+
+```{r}
+ggplot(gapminder_2007) + 
+  aes(x = gdpPercap, y = lifeExp, color = pop) +
+  geom_point(alpha=0.8)
+```
+
+```{r}
+ggplot(gapminder_2007) + 
+  geom_point(aes(x = gdpPercap, y = lifeExp,
+                 size = pop), alpha=0.5) + 
+  scale_size_area(max_size = 10)
+```
+
+```{r}
+ggplot(gapminder) +
+  aes(x=gdpPercap, y=lifeExp, col=continent) +
+  geom_point(alpha=0.5)
+```
+
+Data across all years for Kuwait
+
+```{r}
+kuw <- gapminder %>% filter(country=="Kuwait")
+kuw
+```
+
+```{r}
+ggplot(gapminder) + 
+  aes(x = gdpPercap, y = lifeExp, col = continent, label = country) +
+  geom_point() + 
+  facet_wrap(~continent)
+```
+
+Below are some advantages of ggplot over base R for data visualization:
+
+1. **Layered Grammar of Graphics**: ggplot uses a consistent, layered approach. You build plots by adding layers (data, aesthetics, geoms, themes) with the `+` operator. This makes complex plots easier to construct and modify, compared to base R, where each plot type often requires different functions and arguments [[1]](https://drive.google.com/file/d/1BYSWJLROqxA1YpuDhJkzUolhiZqiOOKg/view?usp=drivesdk), [[3]](https://drive.google.com/file/d/1tFqKg9_nhVMmKYfiM1CQKDS2PmPwLh8n/view?usp=drivesdk), [[2]](https://drive.google.com/file/d/1Clw2_EJ_hY3USNwObiPnxpIQIfirxfW0/view?usp=drivesdk), [[4]](https://drive.google.com/file/d/1FDBbIi2Rlw2In9mClB7Mub8oUPgx6y8h/view?usp=drivesdk), [[5]](https://drive.google.com/file/d/15xXaaIcCWOc_x1gJLdySWOd_sfMXTiaw/view?usp=drivesdk).
+
+2. **Declarative Syntax**: You specify *what* you want to show (e.g., which variables map to axes, color, shape), not *how* to draw it. This makes code more readable and easier to maintain [[1]](https://drive.google.com/file/d/1BYSWJLROqxA1YpuDhJkzUolhiZqiOOKg/view?usp=drivesdk), [[3]](https://drive.google.com/file/d/1tFqKg9_nhVMmKYfiM1CQKDS2PmPwLh8n/view?usp=drivesdk), [[2]](https://drive.google.com/file/d/1Clw2_EJ_hY3USNwObiPnxpIQIfirxfW0/view?usp=drivesdk), [[4]](https://drive.google.com/file/d/1FDBbIi2Rlw2In9mClB7Mub8oUPgx6y8h/view?usp=drivesdk), [[5]](https://drive.google.com/file/d/15xXaaIcCWOc_x1gJLdySWOd_sfMXTiaw/view?usp=drivesdk).
+
+3. **Beautiful Defaults**: ggplot produces publication-quality figures with sensible defaults, so your plots look good without extensive tweaking. Base R gives you full control, but making plots look polished can be time-consuming [[1]](https://drive.google.com/file/d/1BYSWJLROqxA1YpuDhJkzUolhiZqiOOKg/view?usp=drivesdk), [[3]](https://drive.google.com/file/d/1tFqKg9_nhVMmKYfiM1CQKDS2PmPwLh8n/view?usp=drivesdk), [[2]](https://drive.google.com/file/d/1Clw2_EJ_hY3USNwObiPnxpIQIfirxfW0/view?usp=drivesdk), [[4]](https://drive.google.com/file/d/1FDBbIi2Rlw2In9mClB7Mub8oUPgx6y8h/view?usp=drivesdk), [[5]](https://drive.google.com/file/d/15xXaaIcCWOc_x1gJLdySWOd_sfMXTiaw/view?usp=drivesdk).
+
+4. **Faceting and Customization**: ggplot makes it easy to split data into multiple panels (facets) and customize aesthetics, legends, and themes. These features are more cumbersome in base R [[3]](https://drive.google.com/file/d/1tFqKg9_nhVMmKYfiM1CQKDS2PmPwLh8n/view?usp=drivesdk), [[2]](https://drive.google.com/file/d/1Clw2_EJ_hY3USNwObiPnxpIQIfirxfW0/view?usp=drivesdk).
+
+5. **Extensibility**: ggplot is part of a large ecosystem of packages for advanced visualizations and customizations, making it more flexible for scientific work [[1]](https://drive.google.com/file/d/1BYSWJLROqxA1YpuDhJkzUolhiZqiOOKg/view?usp=drivesdk), [[3]](https://drive.google.com/file/d/1tFqKg9_nhVMmKYfiM1CQKDS2PmPwLh8n/view?usp=drivesdk), [[2]](https://drive.google.com/file/d/1Clw2_EJ_hY3USNwObiPnxpIQIfirxfW0/view?usp=drivesdk), [[5]](https://drive.google.com/file/d/15xXaaIcCWOc_x1gJLdySWOd_sfMXTiaw/view?usp=drivesdk).
